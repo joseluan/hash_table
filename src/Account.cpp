@@ -1,4 +1,18 @@
+#ifndef ACCOUNT_H
+#define ACCOUNT_H
 #include "../include/Account.h"
+#endif
+
+using namespace std;
+
+Account::Account(){
+	this->id_account = -1;
+	this->nome = "";
+	this->banco = -1;
+	this->agencia = -1;
+	this->conta = -1;
+	this->saldo = 0.0;
+}
 
 int Account::getId_account(){
 	return this->id_account;

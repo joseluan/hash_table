@@ -1,8 +1,12 @@
-#include "Accout.h"
+#ifndef ACCOUNT_H
+#define ACCOUNT_H
+#include "Account.h"
+#endif
+#include <forward_list>
 
 using namespace std;
 
-template<class KeyType, class DataType>
+template<class KeyType, class DataType, class KeyHash, class KeyEqual>
 class HashEntry{
 public:
 	HashEntry(KeyType k_, DataType d_): m_key( k_ ), m_data( d_ ){};
@@ -11,7 +15,7 @@ public:
 };
 
 struct KeyHash {
-	size_t operator ()(const Account::AcctKey & k_) const{
+	size_t operator()(const Account::AcctKey & k_) const{
 		return std::hash<int>()(k_);
 	}
 };
@@ -22,39 +26,61 @@ struct KeyEqual {
 	}
 };
 
-template<typename KeyType, typename DataType>
-class HashTbl{
-public:
-	using AcctKey = int;
-	using Entry = HashEntry<KeyType, DataType>;
-	
-	int qtdDivisores (int x ){
-		int qtd = 0;
-		for (int i = 1; i <= x; ++i){
-			if(x%i==0) qtd++;
-		}
-		return qtd;
-	}
-
-	int ehPrimo (int x ){
-		return qtdDivisores(x) == 2 ? 1 : 0;
-	}
-	
-	HashTbl(size_t tbl_size_= DEFAULT_SIZE){
-		if(!ehPrimo(tbl_size_)){
-			while(!ehPrimo(tbl_size_)){
-				tbl_size_++;
+namespace sc{
+	template<typename KeyType, typename DataType,  class KeyHash , class KeyEqual>
+	class HashTbl{
+	public:
+		using Entry = HashEntry<KeyType, DataType>;
+		
+		int qtdDivisores (int x ){
+			int qtd = 0;
+			for (int i = 1; i <= x; ++i){
+				if(x%i==0) qtd++;
 			}
+			return qtd;
+		}
+
+		int ehPrimo (int x ){
+			return qtdDivisores(x) == 2 ? 1 : 0;
 		}
 		
-		m_size = tbl_size_;
-	}
-private:
-	void rehash();
-	unsigned int m_size;
-	unsigned int m_count;
+		HashTbl(size_t tbl_size_= DEFAULT_SIZE){
+			if(!ehPrimo(tbl_size_)){
+				while(!ehPrimo(tbl_size_)){
+					tbl_size_++;
+				}
+			}
+			
+			m_size = tbl_size_;
+		}
 
-	forwardlist<Entry> * m_data_table;
+		~HashTbl(){
+			/*auto it = m_data_table->cbegin();
+			auto it2 = it++;
+			while(it != m_data_table->cend()){
+				delete it;
+				it = it2;
+				it2 = it++; 
+			}*/
+			delete m_data_table;
+		}
 
-	static const short DEFAULT_SIZE = 11;
-};
+		bool insert(const KeyType & key_, const DataType & data_item_){
+			Entry ent(key_, data_item_);
+			KeyHash hashFunc;
+			KeyEqual equalFunc;
+
+			auto end (hashFunc( key_ ) % m_size ); 
+			
+			return true;
+		}
+	private:
+		void rehash();
+		unsigned int m_size;
+		unsigned int m_count;
+
+		forward_list<Entry> * m_data_table;
+
+		static const short DEFAULT_SIZE = 11;
+	};
+}

@@ -11,8 +11,13 @@ class Account{
 		int conta;
 		double saldo;
 	public:
-		Account();
-		~Account();		
+		using AcctKey = int;
+		
+		AcctKey getKey(){
+			return std::hash<AcctKey>()(conta);
+		}		
+
+		Account();		
 
 		int getId_account();
 		void setId_account(int value);
