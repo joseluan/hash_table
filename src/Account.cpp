@@ -1,3 +1,6 @@
+/*! @file Account.cpp
+    @brief Implementação dos métodos da Account.h
+*/
 #ifndef ACCOUNT_H
 #define ACCOUNT_H
 #include "../include/Account.h"
