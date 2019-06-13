@@ -35,6 +35,10 @@ namespace ac{
 	public:
 		using Entry = HashEntry<KeyType, DataType>;
 		
+		/**
+        * @brief retorna a quantidade de divisores de um inteiro
+        * @return int
+        */	
 		int qtdDivisores (int x ){
 			int qtd = 0;
 			for (int i = 1; i <= x; ++i){
@@ -43,8 +47,12 @@ namespace ac{
 			return qtd;
 		}
 
-		int ehPrimo (int x ){
-			return qtdDivisores(x) == 2 ? 1 : 0;
+		/**
+        * @brief verifica se um número é primo
+        * @return bool
+        */	
+		bool ehPrimo (int x ){
+			return qtdDivisores(x) == 2 ? true : false;
 		}
 		
 		HashTbl(size_t tbl_size_= DEFAULT_SIZE){
@@ -56,7 +64,9 @@ namespace ac{
 			
 			m_size = tbl_size_;
 		}
-
+		/**
+        * @brief destrutor da classe
+        */	
 		~HashTbl(){
 			auto it = m_data_table->cbegin();
 			auto it2 = it++;
@@ -68,6 +78,12 @@ namespace ac{
 			delete m_data_table;
 		}
 
+		/**
+        * @brief insere um registro (chave, valor) na tabela
+        * @param key_ chave no registro
+        * @param data_item_ valor que vai ser ligado a key_
+        * @return bool true caso consiga inserir
+        */	
 		bool insert(const KeyType & key_, const DataType & data_item_){
 			if(m_count == m_size) return false;
 
@@ -93,6 +109,11 @@ namespace ac{
 			return true;
 		}
 
+		/**
+        * @brief apaga um registro com uma chave especifica
+        * @param k_ chave do registro a ser apagado
+        * @return bool true caso consiga apagar
+        */	
 		bool erase(const KeyType & k_){
 			KeyHash hashFunc;
 			KeyEqual equalFunc;
@@ -113,6 +134,9 @@ namespace ac{
 			return false;
 		}
 
+		/**
+        * @brief apaga todos os registro da tabela
+        */	
 		void clear(void){
 			while(!m_data_table.empty()){
 				m_data_table.pop_front();
@@ -120,14 +144,26 @@ namespace ac{
 			m_count = 0;
 		}
 
+		/**
+        * @brief verifica se a tabela estar vazia
+        * @return bool true caso esteja vazia
+        */	
 		bool empty(void) const{
 			return m_count == 0;
 		}
 
+		/**
+        * @brief a quantidades de registros na tabela
+        * @return int
+        */	
 		size_t size(void) const{
 			return m_count;
 		}
 
+		/**
+        * @brief o valor do registro com a chave k_
+        * @return DataType
+        */	
 		DataType & at(const KeyType & k_ ){
 			KeyHash hashFunc;
 			KeyEqual equalFunc;
@@ -142,8 +178,12 @@ namespace ac{
 				}
 				it++;
 			}
-		}
+		}	
 
+		/**
+        * @brief o valor do registro com a chave k_
+        * @return DataType
+        */
 		DataType & operator[](const KeyType & k_ ){
 			KeyHash hashFunc;
 			KeyEqual equalFunc;
@@ -160,6 +200,10 @@ namespace ac{
 			}
 		}
 
+		/**
+        * @brief mostra todos os registros da tabela
+        * @return std::ostream
+        */
 		friend std::ostream & operator<<(std::ostream & os, const HashTbl & hash){
 			auto it = hash.begin();			
 			os << "[ ";
@@ -172,12 +216,11 @@ namespace ac{
 		}
 
 	private:
-		void rehash();
-		unsigned int m_size;
-		unsigned int m_count;
+		unsigned int m_size; //!< armazena a capacidade da tabela
+		unsigned int m_count; //!< armazena a quantidade de registros
 
-		forward_list<Entry> m_data_table;
+		forward_list<Entry> m_data_table; //!< armazena os registros da tabela
 
-		static const short DEFAULT_SIZE = 11;
+		static const short DEFAULT_SIZE = 11; //!< armazena a capacidade padrão da tabela
 	};
 }

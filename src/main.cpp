@@ -1,3 +1,6 @@
+/*! @file Account.h
+    @brief Classe principal, onde você pode testar a tabela hash
+*/
 #include <functional>
 #include <iostream>
 #include "../include/HashTbl.h"
@@ -19,6 +22,6 @@ int main(int argc, char const *argv[]){
 	//hash->erase(pessoa2.getKey());
 	//hash->clear();
 	
-	cout << hash << endl;
+	cout << hash->size() << endl;
 	return 0;
 }
