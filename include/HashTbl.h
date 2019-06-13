@@ -6,7 +6,7 @@
 
 using namespace std;
 
-template<class KeyType, class DataType, class KeyHash, class KeyEqual>
+template<class KeyType, class DataType>
 class HashEntry{
 public:
 	HashEntry(KeyType k_, DataType d_): m_key( k_ ), m_data( d_ ){};
@@ -55,22 +55,30 @@ namespace sc{
 		}
 
 		~HashTbl(){
-			/*auto it = m_data_table->cbegin();
+			auto it = m_data_table->cbegin();
 			auto it2 = it++;
 			while(it != m_data_table->cend()){
 				delete it;
 				it = it2;
 				it2 = it++; 
-			}*/
+			}
 			delete m_data_table;
 		}
 
 		bool insert(const KeyType & key_, const DataType & data_item_){
-			Entry ent(key_, data_item_);
+			Entry new_entry(key_, data_item_);
 			KeyHash hashFunc;
 			KeyEqual equalFunc;
 
-			auto end (hashFunc( key_ ) % m_size ); 
+			auto end (hashFunc( key_ ) % m_size );
+			m_data_table->push_front(new_entry);
+			/*
+			while(it != m_data_table->cend()){
+				if( true == equalFunc((*it).m_key, new_entry.m_key)){
+					cout << "DEU MERDA\n";
+				}
+			}
+			*/
 			
 			return true;
 		}

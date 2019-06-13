@@ -17,7 +17,8 @@ class Account{
 			return std::hash<AcctKey>()(conta);
 		}		
 
-		Account();		
+		Account();
+		Account(int id_account, string nome, int banco, int agencia, int conta, double saldo);		
 
 		int getId_account();
 		void setId_account(int value);

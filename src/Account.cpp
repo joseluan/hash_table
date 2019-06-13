@@ -14,6 +14,15 @@ Account::Account(){
 	this->saldo = 0.0;
 }
 
+Account::Account(int id_account, string nome, int banco, int agencia, int conta, double saldo){
+	this->id_account = id_account;
+	this->nome = nome;
+	this->banco = banco;
+	this->agencia = agencia;
+	this->conta = conta;
+	this->saldo = saldo;	
+}
+
 int Account::getId_account(){
 	return this->id_account;
 }
